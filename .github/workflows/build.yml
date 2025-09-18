@@ -32,14 +32,27 @@ jobs:
     - name: Package ZIP for Chrome Web Store
       run: bun run package
 
-    - name: Setup CRX private key
-      if: ${{ secrets.CRX_PRIVATE_KEY }}
+    - name: Check if CRX key exists
+      id: check_crx_key
+      env:
+        CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
       run: |
-        echo "${{ secrets.CRX_PRIVATE_KEY }}" > private-key.pem
+        if [ -n "$CRX_PRIVATE_KEY" ]; then
+          echo "has_key=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_key=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Setup CRX private key
+      if: steps.check_crx_key.outputs.has_key == 'true'
+      env:
+        CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+      run: |
+        echo "$CRX_PRIVATE_KEY" > private-key.pem
         chmod 600 private-key.pem
 
     - name: Package CRX for direct installation
-      if: ${{ secrets.CRX_PRIVATE_KEY }}
+      if: steps.check_crx_key.outputs.has_key == 'true'
       run: |
         # Install crx3 for CRX generation
         npm install -g crx3
