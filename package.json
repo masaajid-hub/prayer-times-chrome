@@ -1,6 +1,6 @@
 {
   "name": "@masaajid/prayer-times-chrome",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Chrome extension for calculating prayer times using @masaajid/prayer-times library",
   "main": "dist/manifest.json",
   "type": "module",

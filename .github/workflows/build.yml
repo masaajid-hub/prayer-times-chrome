@@ -57,11 +57,8 @@ jobs:
         # Install crx3 for CRX generation
         npm install -g crx3
 
-        # Generate CRX file with persistent key
-        crx3 dist --key private-key.pem
-
-        # Rename the generated file to expected name
-        mv web-extension.crx prayer-times-chrome.crx
+        # Generate CRX file with persistent key and correct name
+        crx3 dist -p private-key.pem -o prayer-times-chrome.crx
 
         # Clean up private key
         rm -f private-key.pem
