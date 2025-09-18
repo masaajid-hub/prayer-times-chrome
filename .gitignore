@@ -23,5 +23,9 @@ npm-debug.log*
 *.tmp
 *.temp
 
+# Private keys (keep secure!)
+private-key.pem
+*.pem
+
 .claude
 CLAUDE.md

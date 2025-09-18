@@ -32,42 +32,33 @@ jobs:
     - name: Package ZIP for Chrome Web Store
       run: bun run package
 
-    - name: Generate private key for CRX
-      run: openssl genrsa -out private-key.pem 2048
+    - name: Setup CRX private key
+      if: secrets.CRX_PRIVATE_KEY != ''
+      run: |
+        echo "${{ secrets.CRX_PRIVATE_KEY }}" > private-key.pem
+        chmod 600 private-key.pem
 
     - name: Package CRX for direct installation
+      if: secrets.CRX_PRIVATE_KEY != ''
       run: |
-        # Install chrome-webstore-upload-cli for CRX generation
+        # Install crx3 for CRX generation
         npm install -g crx3
 
-        # Generate CRX file
-        crx3 --keyPath=private-key.pem --xmlPath=updates.xml dist prayer-times-chrome.crx
+        # Generate CRX file with persistent key
+        crx3 dist --key private-key.pem
 
-    - name: Create updates.xml for auto-updates
-      run: |
-        cat > updates.xml << EOF
-        <?xml version='1.0' encoding='UTF-8'?>
-        <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
-          <app appid='$(openssl rsa -in private-key.pem -pubout -outform DER | openssl dgst -sha256 -hex | cut -d' ' -f2 | cut -c1-32 | sed 's/./&/16' | tr '0-9a-f' 'a-p')'>
-            <updatecheck codebase='https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/prayer-times-chrome.crx' version='${{ github.ref_name }}' />
-          </app>
-        </gupdate>
-        EOF
+        # Rename the generated file to expected name
+        mv web-extension.crx prayer-times-chrome.crx
 
-    - name: Extract version from tag
-      id: version
-      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        # Clean up private key
+        rm -f private-key.pem
 
     - name: Create Release
-      uses: actions/create-release@v1
-      id: create_release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Prayer Times Chrome Extension ${{ steps.version.outputs.VERSION }}
+        name: Prayer Times Chrome Extension ${{ github.ref_name }}
         body: |
-          ## Prayer Times Chrome Extension ${{ steps.version.outputs.VERSION }}
+          ## Prayer Times Chrome Extension ${{ github.ref_name }}
 
           ### Installation Options:
 
@@ -78,53 +69,34 @@ jobs:
 
           **📦 Direct Installation (.crx)**
           - Download `prayer-times-chrome.crx`
-          - Open Chrome and go to `chrome://extensions/`
+          - Open Chrome: `chrome://extensions/`
           - Enable "Developer mode"
           - Drag and drop the .crx file
+          - Supports auto-updates from GitHub releases
 
           **🔧 Developer Installation (.zip)**
           - Download `prayer-times-chrome.zip`
           - Extract the ZIP file
-          - Load unpacked extension in Chrome
+          - Open Chrome: `chrome://extensions/`
+          - Enable "Developer mode"
+          - Click "Load unpacked" and select extracted folder
 
-          ### What's New:
-          - Prayer time calculations for any location
-          - Multiple Islamic calculation methods
-          - GPS location support
-          - Clean, modern interface
+          ### Features:
+          - Prayer time calculations for any location worldwide
+          - Multiple Islamic calculation methods (MWL, ISNA, Egypt, etc.)
+          - GPS location support with manual coordinate entry
+          - Clean, modern interface optimized for Chrome
+          - Countdown timer to next prayer
+          - Settings persistence across browser sessions
 
           ### Requirements:
           - Chrome 88+ (Manifest v3 support)
+          - No additional permissions beyond location and storage
 
+        files: |
+          prayer-times-chrome.zip
+          prayer-times-chrome.crx
         draft: false
         prerelease: false
-
-    - name: Upload ZIP to Release
-      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./prayer-times-chrome.zip
-        asset_name: prayer-times-chrome.zip
-        asset_content_type: application/zip
-
-    - name: Upload CRX to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./prayer-times-chrome.crx
-        asset_name: prayer-times-chrome.crx
-        asset_content_type: application/x-chrome-extension
-
-    - name: Upload Updates XML
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./updates.xml
-        asset_name: updates.xml
-        asset_content_type: application/xml
