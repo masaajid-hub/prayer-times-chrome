@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Prayer Times by Masaajid",
+  "version": "1.0.0",
+  "description": "Calculate prayer times for your location using the Masaajid prayer times library",
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "32": "assets/icons/icon-32.png",
+    "48": "assets/icons/icon-48.png",
+    "128": "assets/icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Prayer Times Calculator",
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png",
+      "48": "assets/icons/icon-48.png",
+      "128": "assets/icons/icon-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "permissions": ["storage", "geolocation", "alarms"],
+  "host_permissions": [
+    "https://nominatim.openstreetmap.org/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "homepage_url": "https://github.com/masaajid-hub/prayer-times-chrome"
+}

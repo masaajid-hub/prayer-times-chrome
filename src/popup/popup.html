@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prayer Times - Masaajid</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🕌 Prayer Times</h1>
+        <p id="location-display">Select location</p>
+      </header>
+
+      <main>
+        <!-- Location Section -->
+        <section class="location-section" id="location-section">
+          <div class="location-input">
+            <div class="input-group">
+              <label for="address">Search Location:</label>
+              <div class="address-input-container">
+                <input
+                  type="text"
+                  id="address"
+                  placeholder="e.g., Kuala Lumpur, Malaysia"
+                />
+                <button id="search-address" class="btn-icon">🔍</button>
+              </div>
+            </div>
+
+            <div class="or-divider">
+              <span>OR use current location:</span>
+            </div>
+
+            <button id="use-current-location" class="btn-secondary">
+              📍 Use Current Location
+            </button>
+
+            <div class="coords-section" id="coords-section" style="display: none;">
+              <div class="input-group">
+                <label for="latitude">Latitude:</label>
+                <input type="number" id="latitude" step="any" placeholder="e.g., 3.1390" />
+              </div>
+              <div class="input-group">
+                <label for="longitude">Longitude:</label>
+                <input type="number" id="longitude" step="any" placeholder="e.g., 101.6869" />
+              </div>
+            </div>
+          </div>
+
+          <div class="settings">
+            <div class="input-group">
+              <label for="calculation-method">Calculation Method:</label>
+              <select id="calculation-method">
+                <option value="MWL">Muslim World League</option>
+                <option value="Egypt">Egyptian General Authority</option>
+                <option value="Karachi">University of Islamic Sciences, Karachi</option>
+                <option value="UmmAlQura">Umm Al-Qura University, Makkah</option>
+                <option value="Dubai">Dubai</option>
+                <option value="Moonsighting">Moonsighting Committee</option>
+                <option value="ISNA">Islamic Society of North America</option>
+                <option value="Qatar">Qatar</option>
+                <option value="Singapore">Singapore</option>
+                <option value="JAKIM">Jabatan Kemajuan Islam Malaysia</option>
+                <option value="JAKIMKN">Jabatan Kemajuan Islam Malaysia (Kelantan)</option>
+                <option value="Kemenag">Kementerian Agama, Indonesia</option>
+                <option value="Tehran">Institute of Geophysics, University of Tehran</option>
+                <option value="Turkey">Turkey Diyanet</option>
+                <option value="France12">France (12°)</option>
+                <option value="France15">France (15°)</option>
+                <option value="France18">France (18°)</option>
+                <option value="Russia">Russia</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="madhab">Madhab (Asr Calculation):</label>
+              <select id="madhab">
+                <option value="Shafi">Shafi, Maliki, Hanbali</option>
+                <option value="Hanafi">Hanafi</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="calculate" class="btn-primary">
+            🕰️ Calculate Prayer Times
+          </button>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="results-section" style="display: none">
+          <div class="results-header">
+            <h2 class="date-display" id="date-display"></h2>
+            <div class="countdown-timer" id="countdown-timer">
+              <!-- Countdown timer will be populated here -->
+            </div>
+            <div class="calculation-info" id="calculation-info">
+              <!-- Calculation method and madhab info will be populated here -->
+            </div>
+          </div>
+
+          <div class="prayer-times-grid" id="prayer-times">
+            <!-- Prayer times will be populated here -->
+          </div>
+
+          <div class="actions">
+            <button id="show-location" class="btn-secondary">
+              ⚙️ Change Settings
+            </button>
+            <button id="refresh-times" class="btn-secondary">
+              🔄 Refresh
+            </button>
+          </div>
+        </section>
+
+        <!-- Error Section -->
+        <section class="error-section" id="error-section" style="display: none">
+          <div class="error-content">
+            <div class="error-icon">⚠️</div>
+            <div class="error-text" id="error-message">
+              <!-- Error messages will be shown here -->
+            </div>
+          </div>
+          <button id="retry-calculation" class="btn-secondary">
+            🔄 Try Again
+          </button>
+        </section>
+
+        <!-- Loading Section -->
+        <section class="loading-section" id="loading-section" style="display: none">
+          <div class="loading-content">
+            <div class="spinner"></div>
+            <div class="loading-text">Calculating prayer times...</div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          <a href="https://www.npmjs.com/package/@masaajid/prayer-times" target="_blank">
+            @masaajid/prayer-times
+          </a>
+        </p>
+      </footer>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#2D7D32" stroke="#1B5E20" stroke-width="2"/>
+
+  <!-- Large visible crescent moon -->
+  <circle cx="58" cy="64" r="35" fill="#FFFFFF"/>
+  <circle cx="70" cy="64" r="35" fill="#2D7D32"/>
+
+  <!-- Clock face -->
+  <circle cx="82" cy="64" r="22" fill="#FFFFFF" stroke="#1B5E20" stroke-width="2"/>
+
+  <!-- Clock hands pointing to prayer time -->
+  <line x1="82" y1="64" x2="82" y2="47" stroke="#1B5E20" stroke-width="3" stroke-linecap="round"/>
+  <line x1="82" y1="64" x2="93" y2="64" stroke="#1B5E20" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Center dot -->
+  <circle cx="82" cy="64" r="2" fill="#1B5E20"/>
+</svg>

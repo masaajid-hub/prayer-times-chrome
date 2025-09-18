@@ -1,0 +1,48 @@
+{
+  "name": "@masaajid/prayer-times-chrome",
+  "version": "1.0.0",
+  "description": "Chrome extension for calculating prayer times using @masaajid/prayer-times library",
+  "main": "dist/manifest.json",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run build:dev && bun run watch",
+    "watch": "bun --watch run build:ts:dev",
+    "build": "bun run clean && bun run build:ts && bun run build:assets",
+    "build:dev": "bun run clean && bun run build:ts:dev && bun run build:assets",
+    "build:ts": "bun build src/popup/popup.ts --outdir dist/popup --target browser --format esm --minify && bun build src/background/service-worker.ts --outdir dist/background --target browser --format esm --minify",
+    "build:ts:dev": "bun build src/popup/popup.ts --outdir dist/popup --target browser --format esm && bun build src/background/service-worker.ts --outdir dist/background --target browser --format esm",
+    "build:assets": "cp manifest.json dist/ && cp -r src/popup/popup.html dist/popup/ && cp -r src/popup/popup.css dist/popup/ && mkdir -p dist/assets && cp -r src/assets/* dist/assets/ 2>/dev/null || true",
+    "clean": "rm -rf dist && mkdir -p dist/popup dist/background dist/assets/icons",
+    "typecheck": "bunx tsc --noEmit",
+    "test": "bunx tsc --noEmit",
+    "lint": "echo 'No linter configured yet'",
+    "validate": "bun run typecheck && bun run build && bun scripts/validate-build.js",
+    "package": "bun run validate && cd dist && zip -r ../prayer-times-chrome.zip .",
+    "load-extension": "echo 'Load dist/ folder in Chrome Developer Mode at chrome://extensions/'"
+  },
+  "keywords": [
+    "prayer-times",
+    "islamic",
+    "salah",
+    "calculator",
+    "chrome-extension",
+    "masaajid"
+  ],
+  "author": "Masaajid Team",
+  "license": "MIT",
+  "dependencies": {
+    "@masaajid/prayer-times": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masaajid-hub/prayer-times-chrome.git"
+  },
+  "bugs": {
+    "url": "https://github.com/masaajid-hub/prayer-times-chrome/issues"
+  },
+  "homepage": "https://github.com/masaajid-hub/prayer-times-chrome#readme"
+}

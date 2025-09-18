@@ -1,0 +1,27 @@
+# Build outputs
+dist/
+*.zip
+
+# Dependencies
+node_modules/
+bun.lockb
+
+# Development
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Chrome extension development
+*.crx
+*.pem
+
+# Temporary files
+*.tmp
+*.temp
+
+.claude
+CLAUDE.md
