@@ -33,13 +33,13 @@ jobs:
       run: bun run package
 
     - name: Setup CRX private key
-      if: secrets.CRX_PRIVATE_KEY != ''
+      if: ${{ secrets.CRX_PRIVATE_KEY != '' }}
       run: |
         echo "${{ secrets.CRX_PRIVATE_KEY }}" > private-key.pem
         chmod 600 private-key.pem
 
     - name: Package CRX for direct installation
-      if: secrets.CRX_PRIVATE_KEY != ''
+      if: ${{ secrets.CRX_PRIVATE_KEY != '' }}
       run: |
         # Install crx3 for CRX generation
         npm install -g crx3
