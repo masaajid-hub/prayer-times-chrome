@@ -30,7 +30,10 @@ jobs:
       run: bun run build
 
     - name: Package ZIP for Chrome Web Store
-      run: bun run package
+      run: |
+        bun run package
+        # Rename ZIP file to include tag version
+        mv prayer-times-chrome.zip prayer-times-chrome-${{ github.ref_name }}.zip
 
     - name: Check if CRX key exists
       id: check_crx_key
@@ -58,7 +61,7 @@ jobs:
         npm install -g crx3
 
         # Generate CRX file with persistent key and correct name
-        crx3 dist -p private-key.pem -o prayer-times-chrome.crx
+        crx3 dist -p private-key.pem -o prayer-times-chrome-${{ github.ref_name }}.crx
 
         # Clean up private key
         rm -f private-key.pem
@@ -104,8 +107,8 @@ jobs:
           - No additional permissions beyond location and storage
 
         files: |
-          prayer-times-chrome.zip
-          prayer-times-chrome.crx
+          prayer-times-chrome-${{ github.ref_name }}.zip
+          prayer-times-chrome-${{ github.ref_name }}.crx
         draft: false
         prerelease: false
       env:
