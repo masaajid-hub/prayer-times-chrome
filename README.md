@@ -15,7 +15,7 @@ A Chrome extension for calculating prayer times using the [@masaajid/prayer-time
 
 ### From Chrome Web Store
 
-Not yet available on the Chrome Web Store.
+[Install from Chrome Web Store](https://chromewebstore.google.com/detail/ndpfjpaapbhnjhifbodknlcnfpbfembh)
 
 ### Development Installation
 
